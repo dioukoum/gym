@@ -15,15 +15,28 @@ if (isset($_POST['enregistrer'])) {
     header('Location: listeGerant.php');
 }
 
-//modification
+//edition
 if (isset($_GET['idm'])) {
     $req = $db->query('select * from gerant where id=' . $_GET['idm']);
     if ($ligne = $req->fetch()) {
+        $_POST['id'] = $ligne['id'];
         $_POST['nom'] = $ligne['nom'];
         $_POST['prenom'] = $ligne['prenom'];
         $_POST['login'] = $ligne['login'];
         $_POST['password'] = $ligne['password'];
     }
+}
+
+//modification
+if (isset($_POST['modifier'])) {
+    $req = $db->prepare('update gerant set nom=?, prenom=?, login=?, password=? where id=?');
+    $req->bindValue(1, $_POST['nom']);
+    $req->bindValue(2, $_POST['prenom']);
+    $req->bindValue(3, $_POST['login']);
+    $req->bindValue(4, $_POST['password']);
+    $req->bindValue(5, $_POST['id']);
+    $req->execute();
+    header('Location: listeGerant.php');
 }
 
 include 'header.php';
@@ -68,6 +81,7 @@ include 'header.php';
                 </div>
 
                 <?php if (isset($_GET['idm'])) : ?>
+                    <input type="hidden" name="id" value="<?php if (isset($_POST['id'])) echo $_POST['id']; ?>">
                     <button type="submit" class="btn btn-primary" name="modifier">Modifier</button>
                 <?php endif ?>
 

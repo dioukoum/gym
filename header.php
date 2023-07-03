@@ -1,16 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['nom'])) {
+  header('Location: index.php');
+}
+?>
+
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
 <!-- beautify ignore:start -->
 <html
   lang="en"
@@ -73,7 +68,7 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
+            <a href="accueil.php" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                   width="25"
@@ -176,12 +171,12 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="ajouterMembre.php" class="menu-link" target="_blank">
+                  <a href="ajouterMembre.php" class="menu-link" >
                     <div data-i18n="Basic">Ajouter un nouveau membre</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="listeMembre.php" class="menu-link" target="_blank">
+                  <a href="listeMembre.php" class="menu-link">
                     <div data-i18n="Basic">Liste des membres</div>
                   </a>
                 </li>
@@ -295,7 +290,7 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
+                            <span class="fw-semibold d-block"><?= isset($_SESSION['nom']) ? $_SESSION['nom'] : ' ' ?></span>
                             <small class="text-muted">Admin</small>
                           </div>
                         </div>
@@ -329,9 +324,9 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="logout.php">
                         <i class="bx bx-power-off me-2"></i>
-                        <span class="align-middle">Log Out</span>
+                        <span class="align-middle">Deconnexion</span>
                       </a>
                     </li>
                   </ul>
