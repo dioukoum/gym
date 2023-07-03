@@ -9,12 +9,13 @@ if (isset($_POST['enregistrer'])) {
     $login = $_POST['login'];
     $password = $_POST['password'];
     $numeroAbonne = $_POST['numeroAbonne'];
-    $req = $db->prepare('insert into membre(nom,prenom,telephone,login,password) values(?,?,?,?,?,?)');
+    $req = $db->prepare('insert into membre(nom,prenom,telephone,login,password,numeroAbonne) values(?,?,?,?,?,?)');
     $req->bindValue(1, $nom);
     $req->bindValue(2, $prenom);
     $req->bindValue(3, $telephone);
     $req->bindValue(4, $login);
     $req->bindValue(5, $password);
+    $req->bindValue(6, $numeroAbonne);
     $req->execute();
     header('Location: listeMembre.php');
 }
@@ -60,16 +61,20 @@ if (isset($_POST['enregistrer'])) {
                     <label class="form-label" for="basic-icon-default-phone">Phone No</label>
                     <div class="input-group input-group-merge">
                         <span id="basic-icon-default-phone2" class="input-group-text"><i class="bx bx-phone"></i></span>
-                        <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="70 40 04 00" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
+                        <input type="text" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="70 40 04 00" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" name="telephone" />
                     </div>
                 </div>
                 <div class="mt-2 mb-3">
                     <label for="largeSelect" class="form-label">Abonnement</label>
                     <select id="largeSelect" class="form-select form-select-lg" name="numeroAbonne">
-                        <option>Abonnemet</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option></option>
+                        <?php
+                        $req = $db->query('select * from abonnement');
+                        while ($ligne = $req->fetch()) : ?>
+                            <option value="<?= $ligne['numeroAbonne'] ?>">
+                                Du <?= $ligne['dateDebut'] ?> au <?= $ligne['dateFin'] ?>
+                            </option>
+                        <?php endwhile ?>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" name="enregistrer">Enregistrer</button>
